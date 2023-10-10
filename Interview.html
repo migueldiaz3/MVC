@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Interview Scheduler</title>
+    <style>
+        /* Add your CSS styles here */
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+ul#slots {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+}
+
+ul#slots li {
+    margin: 10px;
+}
+
+button {
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+div#user-details {
+    text-align: center;
+    margin-top: 20px;
+}
+
+form {
+    display: inline-block;
+    text-align: left;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="email"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+}
+
+button[type="button"] {
+    background-color: #28a745;
+}
+
+div#selected-slot {
+    text-align: center;
+    margin-top: 20px;
+}
+
+    </style>
+</head>
+<body>
+    <h1>Interview Slots</h1>
+    <ul id="slots">
+        <!-- These slots are initially available -->
+        <li><button onclick="selectSlot('10:00 AM')">10:00 AM</button></li>
+        <li><button onclick="selectSlot('12:00 PM')">12:00 PM</button></li>
+        <li><button onclick="selectSlot('3:00 PM')">3:00 PM</button></li>
+        <li><button onclick="selectSlot('6:00 PM')">6:00 PM</button></li>
+    </ul>
+
+    <div id="user-details" style="display: none;">
+        <h2>Enter User Details</h2>
+        <form id="user-form">
+            <label for="username">Username:</label>
+            <input type="text" id="username" required><br>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" required><br>
+
+            <button type="button" onclick="confirmBooking()">Confirm Booking</button>
+        </form>
+    </div>
+
+    <div id="selected-slot" style="display: none;">
+        <h2>Selected Slot</h2>
+        <p id="selected-time"></p>
+        <button onclick="cancelBooking()">Cancel</button>
+    </div>
+
+    <script>
+        var bookedSlots = []; // Array to track booked slots
+
+        function selectSlot(time) {
+            if (bookedSlots.length >= 10) {
+                alert("You have reached the maximum limit of 10 booked slots.");
+                return;
+            }
+
+            bookedSlots.push(time); // Add the selected time to the booked slots
+            updateSlotButtons();
+            document.getElementById('slots').style.display = 'none';
+            document.getElementById('user-details').style.display = 'block';
+            document.getElementById('selected-time').textContent = 'Selected Time: ' + time;
+        }
+
+        function confirmBooking() {
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+
+            // You can send this data to a server or perform further actions here.
+            
+            document.getElementById('user-details').style.display = 'none';
+            document.getElementById('selected-slot').style.display = 'block';
+        }
+
+        function cancelBooking() {
+            document.getElementById('slots').style.display = 'block';
+            document.getElementById('selected-slot').style.display = 'none';
+        }
+
+        // Update slot buttons to disable booked slots
+        function updateSlotButtons() {
+            const slotButtons = document.querySelectorAll('#slots button');
+            for (const button of slotButtons) {
+                if (bookedSlots.includes(button.textContent)) {
+                    button.disabled = true;
+                }
+            }
+        }
+    </script>
+</body>
+</html>
